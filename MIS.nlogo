@@ -1,9 +1,9 @@
-globals  [ ]
+; defining agents
+globals[]
 
 breed [people person]
 
 breed[edu-centers edu-center]
-
 
 people-own [
   learning-ability
@@ -13,7 +13,6 @@ people-own [
 
 ]
 
-; educational centers
 edu-centers-own [
   knowledge-level
   radius
@@ -22,29 +21,39 @@ edu-centers-own [
 links-own [ ]
 
 
+; Main procedures
 
 to setup
+
   clear-all
   reset-ticks
 
-
-  setup-people
-  setup-edu-centers
+  creating-people 15
+  creating-edu-centers 5
 
   reset-ticks
 end
 
 to go
   move-people
+  aging-people
+  improving-people-knowledge
+
+  new-generation
+  dying
+
   tick
 end
 
-to setup-people
 
-  create-people 15 [
+; Creating procedures
+
+to creating-people [creating-people-number]
+
+  create-people creating-people-number [
     setxy random-xcor random-ycor
 
-    set color red
+    set color 37
     set shape "person"
     set size 1.5
 
@@ -52,17 +61,16 @@ to setup-people
     set knowledge-level 5 + random 6
     set learning-ability 10 + random 91
     set learning-willingness 10 + random 91
-
  ]
 
 end
 
-to setup-edu-centers
+to creating-edu-centers [creating-edu-number]
 
-  create-edu-centers 5[
+  create-edu-centers creating-edu-number[
     setxy random-xcor random-ycor
     set shape "house"
-    set color blue
+    set color 104
     set size 3
 
     set radius 10 + random 8
@@ -71,38 +79,86 @@ to setup-edu-centers
 
 end
 
+
+; People related procedures
+
 to move-people
 
    ask people[
 
-   ifelse coin-flip? [right random 60] [left random 60]
+    set heading (heading + 45 - random 90)
     forward random 4
+  ]
+
+end
+
+to aging-people
+  if ticks mod 12 = 0 [
+    ask people[
+    set age age + 1
+    ]
+]
+
+end
+
+to improving-people-knowledge
+
+  ask people[
+     if any? other edu-centers-here and knowledge-level < 100
+       [ set knowledge-level knowledge-level + 1 ]
+  ]
+
+end
+
+to dying
+
+  ask people [
+
+    if age > 65 and age < 75 [
+     if coin-flip? [die]
+    ]
+
+    if age >= 75 [die]
+
   ]
 
 
 end
 
+to new-generation
+
+  creating-people random 5
+
+end
+
+
+
+; Edu-centers related procedures
+;todo improving-edu-centers-knowledge
+
+
+
+; destroying edu-centers and agents
+to cataclysm
+
+  let nOfPeople count people
+  let nOfEduCenters count edu-centers
+
+  ask n-of random nOfPeople  people [die]
+  ask n-of random nOfEduCenters  edu-centers [die]
+end
+
+; Reports
 
 to-report coin-flip?
   report random 2 = 0
 end
-
-to-report average-knowledge-level
-  report mean [knowledge-level] of people
-end
-
-to-report average-knowledge-level-edu
-  report mean [knowledge-level] of edu-centers
-end
-
-
-;age
 @#$#@#$#@
 GRAPHICS-WINDOW
-210
-10
-713
-514
+229
+15
+732
+519
 -1
 -1
 15.0
@@ -143,10 +199,10 @@ NIL
 1
 
 BUTTON
-37
-109
-100
-142
+117
+92
+180
+125
 Go
 go
 T
@@ -160,10 +216,10 @@ NIL
 1
 
 BUTTON
-35
-165
-112
-198
+21
+92
+98
+125
 Go once
 go
 NIL
@@ -179,10 +235,10 @@ NIL
 MONITOR
 209
 541
-378
+394
 586
-People AVG Knowledge level
-average-knowledge-level
+% People AVG Knowledge level
+mean [knowledge-level] of people
 2
 1
 11
@@ -190,13 +246,70 @@ average-knowledge-level
 MONITOR
 511
 538
-709
+726
 583
-Edu Centers AVG knowledge level
-average-knowledge-level-edu
+% Edu Centers AVG knowledge level
+mean [knowledge-level] of edu-centers
 2
 1
 11
+
+BUTTON
+7
+531
+133
+593
+Cataclysm
+cataclysm
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+MONITOR
+745
+17
+816
+62
+Population
+count people
+2
+1
+11
+
+MONITOR
+827
+17
+967
+62
+Number of edu centers
+count edu-centers
+17
+1
+11
+
+PLOT
+4
+330
+204
+518
+People AVG knowledge
+months
+$ AVG knowledge
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot mean [knowledge-level] of people"
 
 @#$#@#$#@
 ## WHAT IS IT?
