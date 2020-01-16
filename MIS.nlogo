@@ -11,6 +11,9 @@ people-own [
   knowledge-level
   age
 
+  studying?
+  studying-finished-ticks
+  studying-started-ticks
 ]
 
 edu-centers-own [
@@ -28,8 +31,8 @@ to setup
   clear-all
   reset-ticks
 
-  creating-people 15
-  creating-edu-centers 5
+  creating-people 25
+  creating-edu-centers 6
   mark-radius
 
   reset-ticks
@@ -57,12 +60,16 @@ to creating-people [creating-people-number]
 
     set color 37
     set shape "person"
-    set size 1.2
+    set size 1
 
     set age 17 + random 4
     set knowledge-level 5 + random 6
     set learning-ability 10 + random 91
     set learning-willingness 10 + random 91
+    set studying? false
+    set studying-started-ticks 0
+    set studying-finished-ticks 0
+    pendown
  ]
 
 end
@@ -73,10 +80,12 @@ to creating-edu-centers [creating-edu-number]
     setxy random-xcor random-ycor
     set shape "house"
     set color 104
-    set size 2
+    set size 1.2
 
     set radius 1 + random 3
     set knowledge-level 30 + random 71
+
+
   ]
 
 end
@@ -86,10 +95,12 @@ end
 
 to move-people [steps]
 
-   ask people[
-
-    set heading (heading + 45 - random 90)
-    forward random steps
+  let nonstudying-people people with [studying? = false]
+   ask nonstudying-people[
+   ; if studying-finished-ticks - studying-started-ticks > 36 and studying? = false and count edu-centers in-radius 3 < 0 [
+      set heading (heading + 45 - random 90)
+      forward random steps
+  ;  ]
   ]
 
 end
@@ -107,17 +118,38 @@ to improving-people-knowledge
 
   ask people[
 
-     ifelse count edu-centers in-radius 3 > 0 and knowledge-level < 100
+     ifelse count edu-centers in-radius 3 > 0 and knowledge-level < 100 and studying-finished-ticks - studying-started-ticks < 36
      [
         set knowledge-level knowledge-level + 1
         set color red
+        set studying? true
 
+        if studying-started-ticks = 0 [
+        set studying-started-ticks ticks
+        ]
+
+        set studying-finished-ticks ticks
         ; Todo WAIT 3/5/8 years
     ]
     [
       set color 37
+      set studying? false
+
     ]
   ]
+
+
+  ;;Temp
+  ask people[
+    if studying-finished-ticks - studying-started-ticks = 36
+    [set color 96]
+
+  ]
+
+
+   if ticks mod 12 = 0 [
+    creating-people random 3
+   ]
 
 end
 
@@ -137,7 +169,10 @@ to dying
 end
 
 to new-generation
-  creating-people random 3
+   if ticks mod 12 = 0 [
+    creating-people random 3
+   ]
+
 end
 
 
