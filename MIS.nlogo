@@ -56,10 +56,6 @@ to creating-people [creating-people-number]
 
   create-people creating-people-number [
 
-
-    ;move-to one-of patches with [not any? other people in-radius 2 and not any? other edu-centers in-radius 4]
-
-
     set color 37
     set shape "person"
     set size 1
@@ -72,10 +68,10 @@ to creating-people [creating-people-number]
     set studying-started-ticks 0
     set studying-finished-ticks 0
 
-    while [any? other people in-radius 2 and any? other edu-centers in-radius 4] [
+    while [any? other people in-radius 2 and any? other edu-centers in-radius 3] [
       setxy random-xcor random-ycor
     ]
-    pendown
+    set pen-mode pen-value
  ]
 
 end
@@ -94,7 +90,6 @@ to creating-edu-centers [creating-edu-number]
      while [any? other edu-centers in-radius 10] [
       setxy random-xcor random-ycor
     ]
-    ;move-to one-of patches with [not any? other edu-centers in-radius 10]
   ]
 
 end
@@ -113,11 +108,12 @@ to move-people [steps]
 end
 
 to aging-people
+
   if ticks mod 12 = 0 [
-    ask people[
+    ask people [
     set age age + 1
     ]
-]
+  ]
 
 end
 
@@ -166,19 +162,20 @@ end
 
 to new-generation
    if ticks mod 12 = 0 [
-    creating-people random 3
+    creating-people random 5
    ]
 end
 
-
+; todo improving people willingness
 
 ; Edu-centers related procedures
-;todo improving-edu-centers-knowledge
+
 to mark-radius
+
   ask edu-centers[
     ask patches in-radius 2 [set pcolor grey]
-
   ]
+
 end
 
 
@@ -190,6 +187,7 @@ to cataclysm
 
   ask n-of random nOfPeople  people [die]
   ask n-of random nOfEduCenters  edu-centers [die]
+
 end
 
 ; Reports
@@ -201,8 +199,8 @@ end
 GRAPHICS-WINDOW
 213
 21
-716
-525
+836
+645
 -1
 -1
 15.0
@@ -277,10 +275,10 @@ NIL
 1
 
 MONITOR
-213
-541
-398
-586
+859
+406
+1044
+451
 % People AVG Knowledge level
 mean [knowledge-level] of people
 2
@@ -288,10 +286,10 @@ mean [knowledge-level] of people
 11
 
 MONITOR
-511
-538
-726
-583
+1073
+409
+1288
+454
 % Edu Centers AVG knowledge level
 mean [knowledge-level] of edu-centers
 2
@@ -316,10 +314,10 @@ NIL
 1
 
 MONITOR
-745
-17
-816
-62
+862
+27
+933
+72
 Population
 count people
 2
@@ -327,10 +325,10 @@ count people
 11
 
 MONITOR
-827
-17
-967
-62
+955
+28
+1095
+73
 Number of edu centers
 count edu-centers
 17
@@ -338,10 +336,10 @@ count edu-centers
 11
 
 PLOT
-4
-330
+856
 204
-518
+1286
+392
 People AVG knowledge
 months
 $ AVG knowledge
@@ -364,7 +362,7 @@ initial-population
 initial-population
 1
 100
-20.0
+40.0
 1
 1
 NIL
@@ -379,11 +377,43 @@ initial-edu-centers
 initial-edu-centers
 1
 100
-10.0
+5.0
 1
 1
 NIL
 HORIZONTAL
+
+MONITOR
+1001
+95
+1128
+140
+Number of bachelors
+count people with[studying-finished-ticks - studying-started-ticks >= 36]
+17
+1
+11
+
+MONITOR
+864
+96
+980
+141
+Currently studying
+count people with [studying?]
+1
+1
+11
+
+CHOOSER
+19
+266
+157
+311
+pen-value
+pen-value
+"up" "down" "erase"
+0
 
 @#$#@#$#@
 ## WHAT IS IT?
