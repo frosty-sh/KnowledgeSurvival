@@ -1,9 +1,10 @@
 ; defining agents
-globals[]
+globals[
+]
 
 breed [people person]
 
-breed[edu-centers edu-center]
+breed [edu-centers edu-center]
 
 people-own [
   learning-ability
@@ -27,15 +28,13 @@ links-own [ ]
 ; Main procedures
 
 to setup
-
   clear-all
   reset-ticks
 
-  creating-people 25
-  creating-edu-centers 6
-  mark-radius
+  creating-edu-centers initial-edu-centers
+  creating-people initial-population
 
-  reset-ticks
+  mark-radius
 end
 
 to go
@@ -56,7 +55,10 @@ end
 to creating-people [creating-people-number]
 
   create-people creating-people-number [
-    setxy random-xcor random-ycor
+
+
+    ;move-to one-of patches with [not any? other people in-radius 2 and not any? other edu-centers in-radius 4]
+
 
     set color 37
     set shape "person"
@@ -69,6 +71,10 @@ to creating-people [creating-people-number]
     set studying? false
     set studying-started-ticks 0
     set studying-finished-ticks 0
+
+    while [any? other people in-radius 2 and any? other edu-centers in-radius 4] [
+      setxy random-xcor random-ycor
+    ]
     pendown
  ]
 
@@ -77,7 +83,7 @@ end
 to creating-edu-centers [creating-edu-number]
 
   create-edu-centers creating-edu-number[
-    setxy random-xcor random-ycor
+
     set shape "house"
     set color 104
     set size 1.2
@@ -85,7 +91,10 @@ to creating-edu-centers [creating-edu-number]
     set radius 1 + random 3
     set knowledge-level 30 + random 71
 
-
+     while [any? other edu-centers in-radius 10] [
+      setxy random-xcor random-ycor
+    ]
+    ;move-to one-of patches with [not any? other edu-centers in-radius 10]
   ]
 
 end
@@ -97,10 +106,8 @@ to move-people [steps]
 
   let nonstudying-people people with [studying? = false]
    ask nonstudying-people[
-   ; if studying-finished-ticks - studying-started-ticks > 36 and studying? = false and count edu-centers in-radius 3 < 0 [
       set heading (heading + 45 - random 90)
       forward random steps
-  ;  ]
   ]
 
 end
@@ -118,7 +125,7 @@ to improving-people-knowledge
 
   ask people[
 
-     ifelse count edu-centers in-radius 3 > 0 and knowledge-level < 100 and studying-finished-ticks - studying-started-ticks < 36
+     ifelse count edu-centers in-radius 2 > 0 and knowledge-level < 100 and studying-finished-ticks - studying-started-ticks < 36
      [
         set knowledge-level knowledge-level + 1
         set color red
@@ -129,7 +136,6 @@ to improving-people-knowledge
         ]
 
         set studying-finished-ticks ticks
-        ; Todo WAIT 3/5/8 years
     ]
     [
       set color 37
@@ -138,7 +144,6 @@ to improving-people-knowledge
     ]
   ]
 
-
   ;;Temp
   ask people[
     if studying-finished-ticks - studying-started-ticks = 36
@@ -146,33 +151,23 @@ to improving-people-knowledge
 
   ]
 
-
-   if ticks mod 12 = 0 [
-    creating-people random 3
-   ]
-
 end
 
 to dying
-
   ask people [
 
     if age > 65 and age < 75 [
      if coin-flip? [die]
     ]
-
     if age >= 75 [die]
 
   ]
-
-
 end
 
 to new-generation
    if ticks mod 12 = 0 [
     creating-people random 3
    ]
-
 end
 
 
@@ -181,7 +176,7 @@ end
 ;todo improving-edu-centers-knowledge
 to mark-radius
   ask edu-centers[
-    ask patches in-radius 3 [set pcolor grey]
+    ask patches in-radius 2 [set pcolor grey]
 
   ]
 end
@@ -204,10 +199,10 @@ to-report coin-flip?
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-229
-15
-732
-519
+213
+21
+716
+525
 -1
 -1
 15.0
@@ -220,10 +215,10 @@ GRAPHICS-WINDOW
 1
 1
 1
--16
-16
--16
-16
+-20
+20
+-20
+20
 0
 0
 1
@@ -282,9 +277,9 @@ NIL
 1
 
 MONITOR
-209
+213
 541
-394
+398
 586
 % People AVG Knowledge level
 mean [knowledge-level] of people
@@ -358,7 +353,37 @@ true
 false
 "" ""
 PENS
-"default" 1.0 0 -16777216 true "" "plot mean [knowledge-level] of people"
+"knowledge" 1.0 0 -13791810 true "" "plot mean [knowledge-level] of people"
+
+SLIDER
+19
+157
+191
+190
+initial-population
+initial-population
+1
+100
+20.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+20
+206
+192
+239
+initial-edu-centers
+initial-edu-centers
+1
+100
+10.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
