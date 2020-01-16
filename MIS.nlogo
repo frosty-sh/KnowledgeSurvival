@@ -30,15 +30,17 @@ to setup
 
   creating-people 15
   creating-edu-centers 5
+  mark-radius
 
   reset-ticks
 end
 
 to go
-  move-people
+
   aging-people
   improving-people-knowledge
 
+  move-people 4
   new-generation
   dying
 
@@ -55,7 +57,7 @@ to creating-people [creating-people-number]
 
     set color 37
     set shape "person"
-    set size 1.5
+    set size 1.2
 
     set age 17 + random 4
     set knowledge-level 5 + random 6
@@ -71,9 +73,9 @@ to creating-edu-centers [creating-edu-number]
     setxy random-xcor random-ycor
     set shape "house"
     set color 104
-    set size 3
+    set size 2
 
-    set radius 10 + random 8
+    set radius 1 + random 3
     set knowledge-level 30 + random 71
   ]
 
@@ -82,12 +84,12 @@ end
 
 ; People related procedures
 
-to move-people
+to move-people [steps]
 
    ask people[
 
     set heading (heading + 45 - random 90)
-    forward random 4
+    forward random steps
   ]
 
 end
@@ -104,8 +106,17 @@ end
 to improving-people-knowledge
 
   ask people[
-     if any? other edu-centers-here and knowledge-level < 100
-       [ set knowledge-level knowledge-level + 1 ]
+
+     ifelse count edu-centers in-radius 3 > 0 and knowledge-level < 100
+     [
+        set knowledge-level knowledge-level + 1
+        set color red
+
+        ; Todo WAIT 3/5/8 years
+    ]
+    [
+      set color 37
+    ]
   ]
 
 end
@@ -126,16 +137,19 @@ to dying
 end
 
 to new-generation
-
-  creating-people random 5
-
+  creating-people random 3
 end
 
 
 
 ; Edu-centers related procedures
 ;todo improving-edu-centers-knowledge
+to mark-radius
+  ask edu-centers[
+    ask patches in-radius 3 [set pcolor grey]
 
+  ]
+end
 
 
 ; destroying edu-centers and agents
