@@ -87,7 +87,7 @@ to creating-edu-centers [creating-edu-number]
     set radius 1 + random 3
     set knowledge-level 30 + random 71
 
-     while [any? other edu-centers in-radius 10] [
+     while [any? other edu-centers in-radius 4] [
       setxy random-xcor random-ycor
     ]
   ]
@@ -162,7 +162,7 @@ end
 
 to new-generation
    if ticks mod 12 = 0 [
-    creating-people random 5
+    creating-people random new-generation-number
    ]
 end
 
@@ -361,8 +361,8 @@ SLIDER
 initial-population
 initial-population
 1
-100
-40.0
+500
+401.0
 1
 1
 NIL
@@ -377,7 +377,7 @@ initial-edu-centers
 initial-edu-centers
 1
 100
-5.0
+19.0
 1
 1
 NIL
@@ -406,14 +406,29 @@ count people with [studying?]
 11
 
 CHOOSER
-19
-266
-157
-311
+20
+420
+158
+465
 pen-value
 pen-value
 "up" "down" "erase"
 0
+
+SLIDER
+17
+258
+201
+291
+new-generation-number
+new-generation-number
+0
+100
+25.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
