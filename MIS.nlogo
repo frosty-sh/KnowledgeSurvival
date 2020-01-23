@@ -59,7 +59,7 @@ to creating-people [creating-people-number]
   create-people creating-people-number [
 
     set color 37
-    set shape "person"
+    set shape "turtle"
     set size 1
 
     set age 17 + random 4
@@ -103,7 +103,10 @@ to move-people [steps]
 
   let nonstudying-people people with [studying? = false]
    ask nonstudying-people[
-      set heading (heading + 45 - random 90)
+      let nearest-center min-one-of edu-centers [ distance myself ]
+      face nearest-center
+      if ((random (100 - min-willingness)) + min-willingness) > learning-willingness
+      [rt random 180 + 90]
       forward random steps
   ]
 
@@ -504,6 +507,21 @@ non-bachelor-cataclysm-deaths
 0
 1
 11
+
+SLIDER
+8
+608
+188
+641
+min-willingness
+min-willingness
+0
+100
+0.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
