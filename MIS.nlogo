@@ -1,5 +1,7 @@
 ; defining agents
 globals[
+  bachelor-cataclysm-deaths
+  non-bachelor-cataclysm-deaths
 ]
 
 breed [people person]
@@ -182,15 +184,18 @@ end
 ; destroying edu-centers and agents
 to cataclysm
 
-  let nOfEduCenters count edu-centers
-
   let bachelors people with [studying-finished-ticks - studying-started-ticks >= 36]
   let non-bachelors people with [studying-finished-ticks - studying-started-ticks < 36]
 
-  ask n-of (kill-bachelor-percentage / 100 * count bachelors ) bachelors [die]
-  ask n-of (kill-non-bachelor-percentage / 100 * count non-bachelors ) non-bachelors [die]
-  ask n-of (kill-eduCenters-percentage / 100 * nOfEduCenters)  edu-centers [die]
+  let bachelors-to-kill kill-bachelor-percentage / 100 * count bachelors
+  let non-bachelors-to-kill kill-non-bachelor-percentage / 100 * count non-bachelors
 
+  ask n-of bachelors-to-kill bachelors [die]
+  ask n-of non-bachelors-to-kill non-bachelors [die]
+  ask n-of (kill-eduCenters-percentage / 100 *  count edu-centers)  edu-centers [die]
+
+  set bachelor-cataclysm-deaths bachelor-cataclysm-deaths + bachelors-to-kill
+  set non-bachelor-cataclysm-deaths non-bachelor-cataclysm-deaths + non-bachelors-to-kill
 end
 
 ; Reports
@@ -477,6 +482,28 @@ kill-non-bachelor-percentage
 1
 NIL
 HORIZONTAL
+
+MONITOR
+853
+595
+1045
+640
+Cataclysm bachelor deaths
+bachelor-cataclysm-deaths
+0
+1
+11
+
+MONITOR
+1086
+595
+1295
+640
+Uneducated cataclysm deaths
+non-bachelor-cataclysm-deaths
+0
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
