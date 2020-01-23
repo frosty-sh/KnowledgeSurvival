@@ -182,11 +182,14 @@ end
 ; destroying edu-centers and agents
 to cataclysm
 
-  let nOfPeople count people
   let nOfEduCenters count edu-centers
 
-  ask n-of random nOfPeople  people [die]
-  ask n-of random nOfEduCenters  edu-centers [die]
+  let bachelors people with [studying-finished-ticks - studying-started-ticks >= 36]
+  let non-bachelors people with [studying-finished-ticks - studying-started-ticks < 36]
+
+  ask n-of (kill-bachelor-percentage / 100 * count bachelors ) bachelors [die]
+  ask n-of (kill-non-bachelor-percentage / 100 * count non-bachelors ) non-bachelors [die]
+  ask n-of (kill-eduCenters-percentage / 100 * nOfEduCenters)  edu-centers [die]
 
 end
 
@@ -297,10 +300,10 @@ mean [knowledge-level] of edu-centers
 11
 
 BUTTON
-7
-531
-133
-593
+44
+499
+170
+561
 Cataclysm
 cataclysm
 NIL
@@ -346,7 +349,7 @@ $ AVG knowledge
 0.0
 10.0
 0.0
-10.0
+100.0
 true
 false
 "" ""
@@ -406,10 +409,10 @@ count people with [studying?]
 11
 
 CHOOSER
-20
-420
-158
-465
+857
+488
+995
+533
 pen-value
 pen-value
 "up" "down" "erase"
@@ -424,7 +427,52 @@ new-generation-number
 new-generation-number
 0
 100
-25.0
+7.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+15
+361
+205
+394
+kill-bachelor-percentage
+kill-bachelor-percentage
+0
+100
+50.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+15
+411
+203
+444
+kill-eduCenters-percentage
+kill-eduCenters-percentage
+0
+100
+60.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+14
+320
+205
+353
+kill-non-bachelor-percentage
+kill-non-bachelor-percentage
+0
+100
+50.0
 1
 1
 NIL
