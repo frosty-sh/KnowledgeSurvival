@@ -230,7 +230,7 @@ to cataclysm
   ]
 
   ask edu-centers [
-    set knowledge-level knowledge-level * (1 - (kill-eduCenters-knowledge-percentage - random (kill-eduCenters-knowledge-percentage / 2) / 100)
+    set knowledge-level knowledge-level * (1 - ((kill-eduCenters-knowledge-percentage - random (kill-eduCenters-knowledge-percentage / 2)) / 100))
   ]
 
   set educated-cataclysm-deaths educated-to-kill + educated-to-kill
@@ -560,7 +560,7 @@ PLOT
 115
 1837
 282
-Number of people with knwoledge level above 55
+Number of people with knowledge level above 55
 Months
 Number of people
 0.0
@@ -600,7 +600,7 @@ kill-eduCenters-knowledge-percentage
 kill-eduCenters-knowledge-percentage
 0
 100
-60.0
+68.0
 1
 1
 NIL
