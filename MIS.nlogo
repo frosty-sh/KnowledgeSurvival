@@ -37,9 +37,9 @@ to setup
   clear-all
   reset-ticks
 
-  set max-center-knowledge-co 8
+
   creating-edu-centers initial-edu-centers
-  creating-people initial-population 57
+  creating-people initial-population 56
 
   mark-radius
 end
@@ -67,21 +67,20 @@ to creating-people [creating-people-number ageModifier]
     set shape "person"
     set size 1
 
-    set age 17 + random ageModifier
+    set age 18 + random ageModifier
     set knowledge-level 5 + random 6
-    set learning-ability 30 + random 71
-    set learning-willingness 30 + random 71
+    set learning-ability 40 + random 61
+    set learning-willingness 40 + random 61
     set studying? false
     set studying-started-ticks 0
     set studying-finished-ticks 0
 
     set ticks-to-stay-in-center one-of [36 60 96]
 
-    while [any? other people in-radius 2 and any? other edu-centers in-radius 3] [
-      setxy random-xcor random-ycor
-    ]
+    setxy random-xcor random-ycor
+
     set pen-mode pen-value
- ]
+  ]
 
 end
 
@@ -94,10 +93,10 @@ to creating-edu-centers [creating-edu-number]
     set size 1.2
 
     set radius 1 + random 3
-    set knowledge-level ((random (max-center-knowledge-co - 4)) + 4) * 10
-    set available-knowledge-per-year knowledge-level / max-center-knowledge-co
+    set knowledge-level  40 + random 61
+    set available-knowledge-per-year knowledge-level / 10
 
-     while [any? other edu-centers in-radius 4] [
+    while [any? other edu-centers in-radius 4] [
       setxy random-xcor random-ycor
     ]
   ]
@@ -122,7 +121,10 @@ to move-people [steps]
       set heading (heading + 45 - random 90)
     ]
 
-    forward 0.3
+    ; Moving only educated people
+    if studying-started-ticks -  studying-finished-ticks >= ticks-to-stay-in-center
+    [set heading (heading + 45 - random 90) ]
+    forward 1
   ]
 
 end
@@ -131,7 +133,7 @@ to aging-people
 
   if ticks mod 12 = 0 [
     ask people [
-    set age age + 1
+      set age age + 1
     ]
   ]
 
@@ -143,15 +145,6 @@ to improving-people-knowledge
 
     ifelse count edu-centers in-radius 2 > 0 and knowledge-level < 100 and studying-finished-ticks - studying-started-ticks < ticks-to-stay-in-center
     [
-      ;improve knowldege formula
-
-      ;let nearest-center min-one-of edu-centers [ distance myself ]
-      ;let knowledge-to-absorb-factor  (learning-ability * 0.003) + (learning-willingness * 0.004) + ([knowledge-level] of nearest-center * 0.003)
-      ;let knowledge-to-absorb knowledge-to-absorb-factor * [available-knowledge-per-year] of nearest-center
-
-      ;set knowledge-level knowledge-level + knowledge-to-absorb / 12
-
-      ;improve knowldege formula
 
       let nearest-center min-one-of edu-centers [ distance myself ]
       let knowledge-to-absorb-factor (sqrt (learning-ability * learning-willingness)) / 100
@@ -169,17 +162,16 @@ to improving-people-knowledge
       set studying-finished-ticks ticks
     ]
     [
-      set color 37
       set studying? false
+      let studyingTime studying-finished-ticks - studying-started-ticks;
+      if studyingTime >= 36 and studyingTime < 60 [ set color 65 ]
+      if studyingTime >= 60 and studyingTime < 96 [ set color 95 ]
+      if studyingTime >= 96 [ set color 115 ]
     ]
-  ]
 
-  ;;Temp
-  ask people[
-    if studying-finished-ticks - studying-started-ticks = ticks-to-stay-in-center
-    [set color ticks-to-stay-in-center]
 
   ]
+
 
 end
 
@@ -201,10 +193,11 @@ to dying
 end
 
 to new-generation
-   if ticks mod 12 = 0 [
-    creating-people (death-count + death-count / 100) 0
+
+  if ticks mod 12 = 0 [
+    creating-people ((count people + death-count) / 100 * 1 + death-count) 0
     set death-count 0
-   ]
+  ]
 end
 
 ; todo improving people willingness
@@ -236,6 +229,10 @@ to cataclysm
     die
   ]
 
+  ask edu-centers [
+    set knowledge-level knowledge-level * (1 - (kill-eduCenters-knowledge-percentage - random (kill-eduCenters-knowledge-percentage / 2) / 100)
+  ]
+
   set educated-cataclysm-deaths educated-to-kill + educated-to-kill
   set uneducated-cataclysm-deaths uneducated-to-kill + uneducated-to-kill
 end
@@ -249,7 +246,7 @@ end
 GRAPHICS-WINDOW
 241
 41
-1433
+913
 714
 -1
 -1
@@ -263,8 +260,8 @@ GRAPHICS-WINDOW
 1
 1
 1
--45
-45
+-25
+25
 -25
 25
 0
@@ -325,21 +322,21 @@ NIL
 1
 
 MONITOR
-1457
-428
-1642
-473
+939
+422
+1124
+467
 % People AVG Knowledge level
-mean [knowledge-level] of people
+mean [knowledge-level] of people with [age > 30]
 2
 1
 11
 
 MONITOR
-1671
-431
-1886
-476
+1153
+425
+1368
+470
 % Edu Centers AVG knowledge level
 mean [knowledge-level] of edu-centers
 2
@@ -364,10 +361,10 @@ NIL
 1
 
 MONITOR
-1460
-49
-1531
-94
+942
+43
+1013
+88
 Population
 count people
 2
@@ -375,10 +372,10 @@ count people
 11
 
 MONITOR
-1553
-50
-1693
-95
+1035
+44
+1175
+89
 Number of edu centers
 count edu-centers
 17
@@ -386,13 +383,13 @@ count edu-centers
 11
 
 PLOT
-1454
-226
-1884
-414
+939
+187
+1370
+375
 People AVG knowledge
-months
-$ AVG knowledge
+Months
+AVG knowledge
 0.0
 10.0
 0.0
@@ -401,7 +398,7 @@ true
 false
 "" ""
 PENS
-"knowledge" 1.0 0 -13791810 true "" "plot mean [knowledge-level] of people with [age > 40]"
+"knowledge" 1.0 0 -13791810 true "" "plot mean [knowledge-level] of people with [age > 30]"
 
 SLIDER
 19
@@ -412,7 +409,7 @@ initial-population
 initial-population
 1
 1500
-507.0
+850.0
 1
 1
 NIL
@@ -434,10 +431,10 @@ NIL
 HORIZONTAL
 
 MONITOR
-1599
-117
-1726
-162
+1081
+111
+1208
+156
 Number of bachelors
 count people with[studying-finished-ticks - studying-started-ticks >= 36]
 17
@@ -445,10 +442,10 @@ count people with[studying-finished-ticks - studying-started-ticks >= 36]
 11
 
 MONITOR
-1462
-118
-1578
-163
+944
+112
+1060
+157
 Currently studying
 count people with [studying?]
 1
@@ -456,29 +453,14 @@ count people with [studying?]
 11
 
 CHOOSER
-1455
-510
-1593
-555
+937
+504
+1075
+549
 pen-value
 pen-value
 "up" "down" "erase"
 0
-
-SLIDER
-17
-258
-201
-291
-new-generation-number
-new-generation-number
-0
-100
-15.0
-1
-1
-NIL
-HORIZONTAL
 
 SLIDER
 15
@@ -489,7 +471,7 @@ kill-educated-percentage
 kill-educated-percentage
 0
 100
-53.0
+90.0
 1
 1
 NIL
@@ -504,7 +486,7 @@ kill-eduCenters-percentage
 kill-eduCenters-percentage
 0
 100
-50.0
+70.0
 1
 1
 NIL
@@ -519,17 +501,17 @@ kill-uneducated-percentage
 kill-uneducated-percentage
 0
 100
-51.0
+50.0
 1
 1
 NIL
 HORIZONTAL
 
 MONITOR
-1451
-617
-1643
-662
+933
+611
+1125
+656
 Cataclysm bachelor deaths
 educated-cataclysm-deaths
 0
@@ -537,10 +519,10 @@ educated-cataclysm-deaths
 11
 
 MONITOR
-1684
-617
-1893
-662
+1166
+611
+1375
+656
 Uneducated cataclysm deaths
 uneducated-cataclysm-deaths
 0
@@ -556,7 +538,69 @@ min-willingness
 min-willingness
 0
 100
-15.0
+25.0
+1
+1
+NIL
+HORIZONTAL
+
+MONITOR
+1152
+502
+1326
+547
+NIL
+count people with [age > 30]
+17
+1
+11
+
+PLOT
+1414
+115
+1837
+282
+Number of people with knwoledge level above 55
+Months
+Number of people
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot count people with [knowledge-level > 55]"
+
+PLOT
+1414
+288
+1837
+456
+Population
+Month
+Number of people
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -5825686 true "" "plot count people"
+
+SLIDER
+16
+453
+205
+486
+kill-eduCenters-knowledge-percentage
+kill-eduCenters-knowledge-percentage
+0
+100
+60.0
 1
 1
 NIL
