@@ -4,6 +4,8 @@ globals[
   uneducated-cataclysm-deaths
   max-center-knowledge-co
   death-count
+  cataclysm-tick
+  cataclysm-happened
 ]
 
 breed [people person]
@@ -40,6 +42,7 @@ to setup
 
   creating-edu-centers initial-edu-centers
   creating-people initial-population 56
+  set cataclysm-happened false
 
   mark-radius
 end
@@ -54,6 +57,8 @@ to go
   dying
 
   tick
+  if not cataclysm-happened
+  [set cataclysm-tick ticks]
 end
 
 
@@ -235,6 +240,8 @@ to cataclysm
 
   set educated-cataclysm-deaths educated-to-kill + educated-to-kill
   set uneducated-cataclysm-deaths uneducated-to-kill + uneducated-to-kill
+
+  set cataclysm-happened true
 end
 
 ; Reports
@@ -605,6 +612,17 @@ kill-eduCenters-knowledge-percentage
 1
 NIL
 HORIZONTAL
+
+MONITOR
+1548
+488
+1706
+533
+Years since cataclysm
+(ticks - cataclysm-tick) / 12
+0
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
