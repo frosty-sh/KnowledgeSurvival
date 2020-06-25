@@ -53,7 +53,7 @@ Osobe se kreću prema edukacijskom centru u odnosu na promjenjivi parametar **mi
 
 Osobe provode određeni period u centru gdje **jedan tik** predstavlja **jedan mjesec.** U odnosu na slučajnu vrijednost u centru će ostati **tri**, **pet** ili **osam** godina.
 
-<img src="./images/LegendaOsoba.png" alt="LegendaOsoba" style="zoom:50%;" />
+<img src="./Images/LegendaOsoba.png" alt="LegendaOsoba" style="zoom:50%;" />
 
 ### Rast znanja osobe
 
@@ -70,9 +70,9 @@ Rast znanja u slučaju da se osoba nalazi u edukacionom centru izračunava se na
 
 #### Formule
 
-<img src="./images/Formule.png" alt="Formule" style="zoom:50%;" />
+<img src="./Images/Formule.png" alt="Formule" style="zoom:50%;" />
 
-<img src="./images/FormulaGraf.png" alt="FormulaGraf" style="zoom:50%;" />
+<img src="./Images/FormulaGraf.png" alt="FormulaGraf" style="zoom:50%;" />
 
 ## Kataklizma
 
@@ -82,7 +82,7 @@ Kataklizma predstavlja:
 - **Unišenje** **određenog broja edukacionih centara**
 - **Smanjenje nivoa znanja centrima koji su** **opstali**
 
-<img src="./images/PrijePoslijeKataklizme.png" alt="PrijePoslijeKataklizme" style="zoom:50%;" />
+<img src="./Images/PrijePoslijeKataklizme.png" alt="PrijePoslijeKataklizme" style="zoom:50%;" />
 
 ## Program
 
@@ -95,7 +95,7 @@ Dijelovi programa:
 - Dugmad za pokretanje akcija
 - Izvještaji
 
-<img src="./images/Program.png" alt="Program" style="zoom:50%;" />
+<img src="./Images/Program.png" alt="Program" style="zoom:50%;" />
 
 ## Rezultati
 
@@ -133,7 +133,7 @@ Parametri za **kataklizmu**:
 | Osobe sa nivoom znanja preko 55                    | 46                    | 5                      |
 | Nivo prosječnog znanja osoba starijih od 30 godina | 30.7                  | 24.1                   |
 
-<img src="./images/NajlosijiSlucaj.png" alt="NajlosijiSlucaj" style="zoom:50%;" />
+<img src="./Images/NajlosijiSlucaj.png" alt="NajlosijiSlucaj" style="zoom:50%;" />
 
 ### Najbolji slučaj - Znanje je preživjelo
 
@@ -145,7 +145,7 @@ Parametri za **kataklizmu**:
 | Osobe sa nivoom znanja preko 55                    | 80                    | 208                    |
 | Nivo prosječnog znanja osoba starijih id 30 godina | 34.6                  | 35.2                   |
 
-<img src="./images/NajboljiSlucaj.png" alt="NajboljiSlucaj" style="zoom:50%;" />
+<img src="./Images/NajboljiSlucaj.png" alt="NajboljiSlucaj" style="zoom:50%;" />
 
 ### Prosječni slučaj  - Znanje je obnovljeno
 
@@ -157,5 +157,5 @@ Parametri za **kataklizmu**:
 | Osobe sa nivoom znanja preko 55                    | 123                   | 128                    |
 | Nivo prosječnog znanja osoba starijih od 30 godina | 32                    | 29.45                  |
 
-<img src="./images/ProsjecniSlucaj.png" alt="ProsjecniSlucaj" style="zoom:50%;" />
+<img src="./Images/ProsjecniSlucaj.png" alt="ProsjecniSlucaj" style="zoom:50%;" />
 
