@@ -1,4 +1,4 @@
-# **Opstanak znanja u slučaju kataklizme**
+# Opstanak znanja u slučaju kataklizme
 
 ## Uvod
 
@@ -42,12 +42,10 @@ Nepokretni agent, edukacijski centar, je mjesto gdje agenti uvećavaju svoje zna
 
 #### Atributi
 
-| **Naziv atributa** | Vrijednost   |
+| Naziv atributa | Vrijednost   |
 | ------------------ | ------------ |
 | Nivo znanja        | od 40 do 100 |
 | Radijus            | 2            |
-
-
 
 ## Edukacija osoba
 
@@ -55,7 +53,7 @@ Osobe se kreću prema edukacijskom centru u odnosu na promjenjivi parametar **mi
 
 Osobe provode određeni period u centru gdje **jedan tik** predstavlja **jedan mjesec.** U odnosu na slučajnu vrijednost u centru će ostati **tri**, **pet** ili **osam** godina.
 
-![LegendaOsoba](images/LegendaOsoba.png)
+<img src="./images/LegendaOsoba.png" alt="LegendaOsoba" style="zoom:50%;" />
 
 ### Rast znanja osobe
 
@@ -70,23 +68,11 @@ Rast znanja u slučaju da se osoba nalazi u edukacionom centru izračunava se na
 - $E_{Ky}$ – Dostupno znanje u centru po godini
 - $P_{Ky}$ – Stečeno znanje osobe po godini
 
-
-
 #### Formule
 
-##### Faktora sticanja znanja
+<img src="./images/Formule.png" alt="Formule" style="zoom:50%;" />
 
-$$K_F = \dfrac{\sqrt{P_{LA}*P_{LW}}}{100}$$
-
-##### Dostupno znanje u centru po godini
-
-$$E_{Ky} =\dfrac{E_K}{10}$$
-
-##### Stečeno znanje osobe po godini
-
-$$P_{Ky} = K_F*E_{Ky}$$
-
-![FormulaGraf](images/FormulaGraf.png)
+<img src="./images/FormulaGraf.png" alt="FormulaGraf" style="zoom:50%;" />
 
 ## Kataklizma
 
@@ -96,7 +82,7 @@ Kataklizma predstavlja:
 - **Unišenje** **određenog broja edukacionih centara**
 - **Smanjenje nivoa znanja centrima koji su** **opstali**
 
-![PrijePoslijeKataklizme](images/PrijePoslijeKataklizme.png)
+<img src="./images/PrijePoslijeKataklizme.png" alt="PrijePoslijeKataklizme" style="zoom:50%;" />
 
 ## Program
 
@@ -109,7 +95,7 @@ Dijelovi programa:
 - Dugmad za pokretanje akcija
 - Izvještaji
 
-![Program](images/Program.png)
+<img src="./images/Program.png" alt="Program" style="zoom:50%;" />
 
 ## Rezultati
 
@@ -147,7 +133,7 @@ Parametri za **kataklizmu**:
 | Osobe sa nivoom znanja preko 55                    | 46                    | 5                      |
 | Nivo prosječnog znanja osoba starijih od 30 godina | 30.7                  | 24.1                   |
 
-![NajlosijiSlucaj](images/NajlosijiSlucaj.png)
+<img src="./images/NajlosijiSlucaj.png" alt="NajlosijiSlucaj" style="zoom:50%;" />
 
 ### Najbolji slučaj - Znanje je preživjelo
 
@@ -159,7 +145,7 @@ Parametri za **kataklizmu**:
 | Osobe sa nivoom znanja preko 55                    | 80                    | 208                    |
 | Nivo prosječnog znanja osoba starijih id 30 godina | 34.6                  | 35.2                   |
 
-![NajboljiSlucaj](images/NajboljiSlucaj.png)
+<img src="./images/NajboljiSlucaj.png" alt="NajboljiSlucaj" style="zoom:50%;" />
 
 ### Prosječni slučaj  - Znanje je obnovljeno
 
@@ -171,5 +157,5 @@ Parametri za **kataklizmu**:
 | Osobe sa nivoom znanja preko 55                    | 123                   | 128                    |
 | Nivo prosječnog znanja osoba starijih od 30 godina | 32                    | 29.45                  |
 
-![ProsjecniSlucaj](images/ProsjecniSlucaj.png)
+<img src="./images/ProsjecniSlucaj.png" alt="ProsjecniSlucaj" style="zoom:50%;" />
 
